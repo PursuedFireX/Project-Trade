@@ -7,12 +7,21 @@ namespace PFX
     public class PlayerMovement : MonoBehaviour
     {
         private CharacterController controller;
+        private float baseSize;
+        private float jumpSize;
         private Transform cam;
 
+        private float maxSpd;
         private float spd;
 
         private float turnSmoothTime = 0.1f;
         private float turnSmoothVelocity;
+
+        private float animVelocity;
+        private float maxAnimVelocity;
+        private Animator anim;
+        private float animAccel;
+        private float animDecel;
 
         private bool isSprinting;
         private bool isSneaking;
@@ -22,13 +31,23 @@ namespace PFX
         private int jumps;
         private int maxJumps;
 
+
         private void Start()
         {
             controller = GetComponent<CharacterController>();
             cam = Camera.main.transform;
         }
 
-        public void MovementHandler(float walkSpd, float sprintSpd, float sneakSpd, float gravity)
+        public void SetUp(Animator anim, float animAccel, float animDecel, float baseSize, float jumpSize)
+        {
+            this.anim = anim;
+            this.animAccel = animAccel;
+            this.animDecel = animDecel;
+            this.baseSize = baseSize;
+            this.jumpSize = jumpSize;
+        }
+
+        public void MovementHandler(float walkSpd, float sprintSpd, float sneakSpd, float gravity, float acceleration, float deceleration)
         {
             SpeedManager();
             float horizontal = InputManager.I.Move().x;
@@ -36,16 +55,32 @@ namespace PFX
             Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
 
             if (isSneaking)
-                spd = sneakSpd;
+            {
+                maxSpd = sneakSpd;
+            }
             else if (isSprinting)
-                spd = sprintSpd;
+            {
+                maxSpd = sprintSpd;
+                maxAnimVelocity = 1;
+                anim.SetBool("isSprinting", true);
+            }
             else
-                spd = walkSpd;
+            {
+                maxAnimVelocity = .5f;
+                maxSpd = walkSpd;
+                anim.SetBool("isSprinting", false);
+            }
 
 
 
             if (direction.magnitude >= 0.1f)
             {
+
+                if (spd < maxSpd)
+                    spd += Time.deltaTime * acceleration;
+                else if (spd > maxSpd)
+                    spd -= Time.deltaTime * deceleration;
+                    
 
                 float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
                 float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
@@ -53,7 +88,27 @@ namespace PFX
 
                 Vector3 moveDir = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
                 controller.Move(moveDir.normalized * spd * Time.deltaTime);
+
+                if (animVelocity < maxAnimVelocity)
+                    animVelocity += Time.deltaTime * animAccel;
+                else if (animVelocity > maxAnimVelocity)
+                    animVelocity -= Time.deltaTime * animDecel;
             }
+            else
+            {
+
+                if (spd > 0)
+                    spd -= Time.deltaTime * deceleration;
+                else if (spd < 0)
+                    spd = 0;
+
+                if (animVelocity > 0)
+                    animVelocity -= Time.deltaTime * animDecel;
+                else if (animVelocity < 0)
+                    animVelocity = 0;
+            }
+
+            anim.SetFloat("Velocity", animVelocity);
         }
 
         private void SpeedManager()
@@ -80,6 +135,15 @@ namespace PFX
             {
                 velocity.y = -2f;
                 jumps = maxJumps;
+                anim.SetBool("inAir", false);
+                anim.SetBool("isGrounded", true);
+                controller.height = baseSize;
+            }
+            else
+            {
+                anim.SetBool("inAir", true);
+                anim.SetBool("isJumping", false);
+                controller.height = jumpSize;
             }
         }
 
@@ -97,6 +161,8 @@ namespace PFX
                 if (jumps >= 1)
                 {
                     jumps -= 1;
+                    anim.SetBool("isGrounded", false);
+                    anim.SetBool("isJumping", true);
                     velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
                 }
 
