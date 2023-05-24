@@ -52,6 +52,9 @@ namespace PFX
         [SerializeField, FoldoutGroup("Movement Settings")]
         private float animDeceleration = 0.5f;
 
+
+        public bool hasSword;
+
         private PlayerMovement movement;
 
         private void Awake()
@@ -70,6 +73,17 @@ namespace PFX
             if(InputManager.I.Fire1())
             {
                 anim.SetTrigger("Attack");
+            }
+
+            if(hasSword)
+            {
+                anim.SetBool("hasSword", true);
+                anim.SetLayerWeight(1, 1);
+            }
+            else
+            {
+                anim.SetBool("hasSword", false);
+                anim.SetLayerWeight(1, 0);
             }
 
 

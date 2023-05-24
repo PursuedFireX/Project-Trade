@@ -209,6 +209,7 @@ MonoBehaviour:
   anim: {fileID: 4369577800299076927}
   animAcceleration: 1.7
   animDeceleration: 1.8
+  hasSword: 0
 --- !u!114 &236294092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -623,7 +624,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 703455785}
-  m_LocalRotation: {x: 0.10649046, y: 0.0000000042771338, z: -4.580787e-10, w: 0.9943138}
+  m_LocalRotation: {x: 0.10649046, y: 0.0000000042771364, z: -4.5807902e-10, w: 0.9943138}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -816,7 +817,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 796814984}
-  m_LocalRotation: {x: 0.14253858, y: 0.000000008515343, z: -0.0000000012262861, w: 0.98978925}
+  m_LocalRotation: {x: 0.14253858, y: 0.000000008515519, z: -0.0000000012263115, w: 0.98978925}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2437,7 +2438,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4369577800299076926}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: 2adabd3d55d356940a59023ee8435820, type: 3}
   m_Controller: {fileID: 9100000, guid: d39a317111ac9e245ae0dcea847205e6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
