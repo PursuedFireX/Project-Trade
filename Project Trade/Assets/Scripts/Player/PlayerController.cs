@@ -34,6 +34,8 @@ namespace PFX
         [SerializeField, FoldoutGroup("Movement Settings")]
         private LayerMask checkMask;
 
+        [SerializeField] private Animator anim;
+
         private PlayerMovement movement;
 
         private void Awake()
