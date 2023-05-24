@@ -67,6 +67,12 @@ namespace PFX
             movement.MovementHandler(walkSpeed, sprintSpeed, sneakSpeed, gravity, acceleration, deceleration);
             movement.JumpHandler(jumpHeight, gravity, maxJumps);
             
+            if(InputManager.I.Fire1())
+            {
+                anim.SetTrigger("Attack");
+            }
+
+
         }
     }
 }
