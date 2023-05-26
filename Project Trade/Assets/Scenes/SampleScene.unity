@@ -210,8 +210,10 @@ MonoBehaviour:
   anim: {fileID: 4369577800299076927}
   animAcceleration: 1.7
   animDeceleration: 1.8
-  comboCooldown: 0.8
-  hasSword: 1
+  animationPlayTime: 0.6
+  comboCooldown: 0.4
+  hasSword: 0
+  hasTool: 1
 --- !u!114 &236294092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -432,7 +434,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 467242948}
-  m_LocalRotation: {x: 0.12451125, y: -0.0000000127994015, z: 0.0000000016061683, w: 0.9922182}
+  m_LocalRotation: {x: 0.12451125, y: 0.000000012804362, z: -0.0000000016067907, w: 0.9922182}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -670,7 +672,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 703455785}
-  m_LocalRotation: {x: 0.10649046, y: -0.000000004298783, z: 4.603974e-10, w: 0.9943138}
+  m_LocalRotation: {x: 0.10649046, y: -0.0000000042771364, z: 4.5807902e-10, w: 0.9943138}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -863,7 +865,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 796814984}
-  m_LocalRotation: {x: 0.14253858, y: -0.000000007870863, z: 0.0000000011334753, w: 0.98978925}
+  m_LocalRotation: {x: 0.14253858, y: -0.000000008515345, z: 0.0000000012262865, w: 0.98978925}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1235,7 +1237,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.12451124, y: -0.00000003222163, z: 0.0000000040434207, w: 0.9922182}
+  m_LocalRotation: {x: 0.12451124, y: 0.000000032223607, z: -0.0000000040436685, w: 0.9922182}
   m_LocalPosition: {x: 0, y: 6.05, z: -17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

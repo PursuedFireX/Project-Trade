@@ -51,12 +51,15 @@ namespace PFX
         private float animAcceleration = 0.1f;
         [SerializeField, FoldoutGroup("Animation Settings")]
         private float animDeceleration = 0.5f;
+        [SerializeField, FoldoutGroup("Animation Settings")]
+        private float animationPlayTime = 0.8f;
 
         [FoldoutGroup("Combat Settings")]
         [SerializeField, FoldoutGroup("Combat Settings")]
         private float comboCooldown = 2;
 
         public bool hasSword;
+        public bool hasTool;
 
         private PlayerMovement movement;
         private PlayerCombat combat;
@@ -66,7 +69,7 @@ namespace PFX
             movement = GetComponent<PlayerMovement>();
             combat = GetComponent<PlayerCombat>();
             movement.SetUp(anim, animAcceleration, animDeceleration, baseSize, jumpSize);
-            combat.Initialize(anim, comboCooldown);
+            combat.Initialize(anim, comboCooldown, animationPlayTime);
         }
         
 
@@ -76,7 +79,7 @@ namespace PFX
             movement.GroundCheck(groundCheck, groundDistance, checkMask);
             movement.MovementHandler(walkSpeed, sprintSpeed, sneakSpeed, gravity, acceleration, deceleration);
             movement.JumpHandler(jumpHeight, gravity, maxJumps);
-            combat.CombatHandler(hasSword);
+            combat.CombatHandler(hasSword, hasTool);
         }
     }
 }
