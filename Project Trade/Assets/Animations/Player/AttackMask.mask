@@ -6,8 +6,8 @@ AvatarMask:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WeaponMask
-  m_Mask: 00000000010000000100000000000000000000000100000001000000010000000100000000000000000000000000000000000000
+  m_Name: AttackMask
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
   m_Elements:
   - m_Path: 
     m_Weight: 1
@@ -32,39 +32,39 @@ AvatarMask:
   - m_Path: Armature/Pelvis
     m_Weight: 0
   - m_Path: Armature/Pelvis/Spine1
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2/Neck
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2/Neck/Head
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2/Neck/Head/Head_end
     m_Weight: 0
   - m_Path: Armature/Pelvis/Spine1/Spine2/Shoulder.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2/Shoulder.L/Bicep.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2/Shoulder.L/Bicep.L/Forearm.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2/Shoulder.L/Bicep.L/Forearm.L/Hand.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2/Shoulder.L/Bicep.L/Forearm.L/Hand.L/Finger1.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2/Shoulder.L/Bicep.L/Forearm.L/Hand.L/Finger1.L/Finger2.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2/Shoulder.L/Bicep.L/Forearm.L/Hand.L/Finger1.L/Finger2.L/Finger3.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2/Shoulder.L/Bicep.L/Forearm.L/Hand.L/Finger1.L/Finger2.L/Finger3.L/Finger3.L_end
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2/Shoulder.L/Bicep.L/Forearm.L/Hand.L/Thumb1.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2/Shoulder.L/Bicep.L/Forearm.L/Hand.L/Thumb1.L/Thumb2.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2/Shoulder.L/Bicep.L/Forearm.L/Hand.L/Thumb1.L/Thumb2.L/Thumb2.L_end
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2/Shoulder.R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2/Shoulder.R/Bicep.R
     m_Weight: 1
   - m_Path: Armature/Pelvis/Spine1/Spine2/Shoulder.R/Bicep.R/Forearm.R

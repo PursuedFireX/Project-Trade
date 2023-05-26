@@ -44,24 +44,31 @@ namespace PFX
         [SerializeField, FoldoutGroup("Movement Settings")]
         private LayerMask checkMask;
 
-        [Title("Animation Options")]
-        [SerializeField, FoldoutGroup("Movement Settings")]
+        [FoldoutGroup("Animation Settings")]
+        [SerializeField, FoldoutGroup("Animation Settings")]
         private Animator anim;
-        [SerializeField, FoldoutGroup("Movement Settings")]
+        [SerializeField, FoldoutGroup("Animation Settings")]
         private float animAcceleration = 0.1f;
-        [SerializeField, FoldoutGroup("Movement Settings")]
+        [SerializeField, FoldoutGroup("Animation Settings")]
         private float animDeceleration = 0.5f;
 
+        [FoldoutGroup("Combat Settings")]
+        [SerializeField, FoldoutGroup("Combat Settings")]
+        private float comboCooldown = 2;
 
         public bool hasSword;
 
         private PlayerMovement movement;
+        private PlayerCombat combat;
 
         private void Awake()
         {
             movement = GetComponent<PlayerMovement>();
+            combat = GetComponent<PlayerCombat>();
             movement.SetUp(anim, animAcceleration, animDeceleration, baseSize, jumpSize);
+            combat.Initialize(anim, comboCooldown);
         }
+        
 
         private void Update()
         {
@@ -69,24 +76,7 @@ namespace PFX
             movement.GroundCheck(groundCheck, groundDistance, checkMask);
             movement.MovementHandler(walkSpeed, sprintSpeed, sneakSpeed, gravity, acceleration, deceleration);
             movement.JumpHandler(jumpHeight, gravity, maxJumps);
-            
-            if(InputManager.I.Fire1())
-            {
-                anim.SetTrigger("Attack");
-            }
-
-            if(hasSword)
-            {
-                anim.SetBool("hasSword", true);
-                anim.SetLayerWeight(1, 1);
-            }
-            else
-            {
-                anim.SetBool("hasSword", false);
-                anim.SetLayerWeight(1, 0);
-            }
-
-
+            combat.CombatHandler(hasSword);
         }
     }
 }
