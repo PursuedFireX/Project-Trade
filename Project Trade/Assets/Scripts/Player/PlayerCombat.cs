@@ -82,6 +82,12 @@ namespace PFX
                     playNext = true;
 
                 }
+
+                if (numberOfClicks >= 2 && anim.GetCurrentAnimatorStateInfo(2).normalizedTime > .2f && anim.GetCurrentAnimatorStateInfo(2).IsName("Attack2"))
+                {
+                    playNext = true;
+
+                }
             }
             else if(hasTool)
             {
@@ -105,8 +111,14 @@ namespace PFX
                 anim.SetLayerWeight(2, 0);
                 numberOfClicks = 0;
             }
+            if (anim.GetCurrentAnimatorStateInfo(2).normalizedTime > .9f && anim.GetCurrentAnimatorStateInfo(2).IsName("Attack3"))
+            {
+                anim.SetBool("Attack3", false);
+                anim.SetLayerWeight(2, 0);
+                numberOfClicks = 0;
+            }
 
-            if(Time.time - lastTimeClicked > maxComboDelay)
+            if (Time.time - lastTimeClicked > maxComboDelay)
             {
                 numberOfClicks = 0;
             }
