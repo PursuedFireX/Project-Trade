@@ -17,6 +17,7 @@ namespace PFX
         private float lastTimeClicked;
 
         public AnimatorOverrideController[] attacks;
+        public float[] animSpeeds;
         
 
         public void Initialize(Animator anim, float cooldown, float playTime)
@@ -41,7 +42,12 @@ namespace PFX
 
             if (playNext == true && anim.GetCurrentAnimatorStateInfo(2).normalizedTime > animationPlayTime)
             {
+                if (combo > attacks.Length - 2)
+                    combo = attacks.Length - 1;
+
+                Debug.Log(combo);
                 anim.runtimeAnimatorController = attacks[combo];
+                anim.speed = animSpeeds[combo];
                 anim.Play("Attack", 2, 0);
                 playNext = false;
                 
@@ -54,19 +60,19 @@ namespace PFX
             anim.SetBool("hasSword", hasSword);
             anim.SetBool("isTool", hasTool);
             lastTimeClicked = Time.time;
-            Debug.Log(combo);
-            Debug.Log(clicks);
+            
 
-            if(clicks == 0)
+            if(clicks == 0 && !anim.GetCurrentAnimatorStateInfo(2).IsName("Attack"))
             {
                 anim.runtimeAnimatorController = attacks[0];
+                anim.speed = animSpeeds[0];
                 anim.Play("Attack", 2, 0);
                 clicks++;
             }
             else if (clicks > 0 && anim.GetCurrentAnimatorStateInfo(2).normalizedTime > .2f && anim.GetCurrentAnimatorStateInfo(2).IsName("Attack"))
             {
                 playNext = true;
-                if (combo < attacks.Length)
+                if (combo < attacks.Length - 1)
                     combo++;
                 else
                     combo = 0;
@@ -83,6 +89,11 @@ namespace PFX
 
         private void ResetAnimationBools()
         {
+            if(anim.GetCurrentAnimatorStateInfo(2).normalizedTime > .9f)
+            {
+                clicks = 0;
+                combo = 0;
+            }
 
             if (Time.time - lastTimeClicked > maxComboDelay)
             {
