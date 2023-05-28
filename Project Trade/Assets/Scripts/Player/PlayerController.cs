@@ -58,11 +58,15 @@ namespace PFX
         [SerializeField, FoldoutGroup("Combat Settings")]
         private float comboCooldown = 2;
 
+        public Transform holdPosition;
+
         public bool hasSword;
         public bool hasTool;
 
         private PlayerMovement movement;
         private PlayerCombat combat;
+        private WorldItem pickupItem;
+        private bool canPickup = false;
 
         private void Awake()
         {
@@ -80,6 +84,28 @@ namespace PFX
             movement.MovementHandler(walkSpeed, sprintSpeed, sneakSpeed, gravity, acceleration, deceleration);
             movement.JumpHandler(jumpHeight, gravity, maxJumps);
             combat.CombatHandler(hasSword, hasTool);
+
+            if(canPickup && pickupItem != null)
+            {
+                if(InputManager.I.ToggleInvntory())
+                {
+                    pickupItem.PickUp(holdPosition);
+                }
+            }
+
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            canPickup = true;
+            pickupItem = other.GetComponent<WorldItem>();
+
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            canPickup = false;
+            pickupItem = null;
         }
     }
 }

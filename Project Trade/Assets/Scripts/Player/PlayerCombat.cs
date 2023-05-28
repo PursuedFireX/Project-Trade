@@ -60,29 +60,35 @@ namespace PFX
             anim.SetBool("hasSword", hasSword);
             anim.SetBool("isTool", hasTool);
             lastTimeClicked = Time.time;
-            
 
-            if(clicks == 0 && !anim.GetCurrentAnimatorStateInfo(2).IsName("Attack"))
+            if (hasSword)
             {
-                anim.runtimeAnimatorController = attacks[0];
-                anim.speed = animSpeeds[0];
-                anim.Play("Attack", 2, 0);
-                clicks++;
-            }
-            else if (clicks > 0 && anim.GetCurrentAnimatorStateInfo(2).normalizedTime > .2f && anim.GetCurrentAnimatorStateInfo(2).IsName("Attack"))
-            {
-                playNext = true;
-                if (combo < attacks.Length - 1)
-                    combo++;
-                else
-                    combo = 0;
-
-                if (clicks < attacks.Length)
+                if (clicks == 0 && !anim.GetCurrentAnimatorStateInfo(2).IsName("Attack"))
+                {
+                    anim.runtimeAnimatorController = attacks[0];
+                    anim.speed = animSpeeds[0];
+                    anim.Play("Attack", 2, 0);
                     clicks++;
-                else
-                    clicks = 0;
+                }
+                else if (clicks > 0 && anim.GetCurrentAnimatorStateInfo(2).normalizedTime > .2f && anim.GetCurrentAnimatorStateInfo(2).IsName("Attack"))
+                {
+                    playNext = true;
+                    if (combo < attacks.Length - 1)
+                        combo++;
+                    else
+                        combo = 0;
+
+                    if (clicks < attacks.Length)
+                        clicks++;
+                    else
+                        clicks = 0;
+                }
+
             }
-            
+            else if(hasTool)
+            {
+                anim.Play("Mine", 2, 0);
+            }
 
             anim.SetLayerWeight(2, 1);
         }
