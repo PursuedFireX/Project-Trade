@@ -58,15 +58,16 @@ namespace PFX
         [SerializeField, FoldoutGroup("Combat Settings")]
         private float comboCooldown = 2;
 
-        public Transform holdPosition;
+        [HideInInspector] public bool canPickup = false;
 
-        public bool hasSword;
-        public bool hasTool;
+        [HideInInspector] public GameObject heldItem;
+        public Transform holdPosition;
+        [HideInInspector] public int actionTypeIndex;
+        [HideInInspector] public bool hasItem;
 
         private PlayerMovement movement;
         private PlayerCombat combat;
-        private WorldItem pickupItem;
-        private bool canPickup = false;
+        [HideInInspector] public WorldItem pickupItem;
 
         private void Awake()
         {
@@ -81,18 +82,53 @@ namespace PFX
         {
             movement.ApplyGravity(gravity);
             movement.GroundCheck(groundCheck, groundDistance, checkMask);
-            movement.MovementHandler(walkSpeed, sprintSpeed, sneakSpeed, gravity, acceleration, deceleration);
-            movement.JumpHandler(jumpHeight, gravity, maxJumps);
-            combat.CombatHandler(hasSword, hasTool);
+            
+
+            if (!UIManager.I.inUI)
+            {
+                movement.MovementHandler(walkSpeed, sprintSpeed, sneakSpeed, gravity, acceleration, deceleration);
+                movement.JumpHandler(jumpHeight, gravity, maxJumps);
+                combat.CombatHandler(hasItem, actionTypeIndex);
+
+            }
 
             if(canPickup && pickupItem != null)
             {
-                if(InputManager.I.ToggleInvntory())
+                if(InputManager.I.PickUp())
                 {
-                    pickupItem.PickUp(holdPosition);
+                    pickupItem.PickUp();
+                    canPickup = false;
                 }
             }
+        }
 
+        public void UpdateHeldItem()
+        {
+            if(InventoryManager.I.selectedSlot.itemInSlot != null)
+            {
+                InventoryItem itemInSlot = InventoryManager.I.selectedSlot.itemInSlot;
+                if(itemInSlot.item.showInHand)
+                {
+                    if(heldItem != null)
+                    {
+                        Destroy(heldItem);
+                    }
+                    GameObject go = Instantiate(itemInSlot.item.itemPrefab, holdPosition);
+                    go.transform.localPosition = Vector3.zero;
+                    go.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, -180));
+                    go.transform.localScale = new Vector3(.01f, .01f, .01f);
+                    heldItem = go;
+                    hasItem = true;
+                    anim.SetBool("hasItem", true);
+                    anim.SetLayerWeight(1, 1);
+                }
+            }
+            else if(InventoryManager.I.selectedSlot.itemInSlot == null)
+            {
+                Destroy(heldItem);
+                anim.SetBool("hasItem", false);
+                anim.SetLayerWeight(1, 0);
+            }
         }
 
         private void OnTriggerEnter(Collider other)

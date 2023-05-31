@@ -8,12 +8,32 @@ namespace PFX
 {
     public class InventorySlot : MonoBehaviour, IPointerClickHandler
     {
+        [SerializeField] private Image image;
+        [SerializeField] private Color baseColor;
+        [SerializeField] private Color selectedColor;
+        [HideInInspector] public InventoryItem itemInSlot;
+
+        private void Awake()
+        {
+            Deselect();
+        }
+
         public void OnPointerClick(PointerEventData eventData)
         {
             if (InventoryManager.I.pickedUpItem != null)
             {
                 DropHandler(eventData);
             }
+        }
+
+        public void Select()
+        {
+            image.color = selectedColor;
+        }
+
+        public void Deselect()
+        {
+            image.color = baseColor;
         }
 
         private void DropHandler(PointerEventData eventData)

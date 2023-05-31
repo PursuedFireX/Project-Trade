@@ -16,9 +16,21 @@ namespace PFX
         private int combo;
         private float lastTimeClicked;
 
-        public AnimatorOverrideController[] attacks;
-        public float[] animSpeeds;
-        
+        private AnimatorOverrideController[] attacks;
+        private float[] animSpeeds;
+
+        private void Update()
+        {
+            if(InventoryManager.I.selectedSlot.itemInSlot != null)
+            {
+                InventoryItem item = InventoryManager.I.selectedSlot.itemInSlot;
+                if (GameManager.I.playerController.heldItem.GetComponent<WeaponBase>() != null)
+                {
+                    attacks = GameManager.I.playerController.heldItem.GetComponent<WeaponBase>().data.attacks;
+                    animSpeeds = GameManager.I.playerController.heldItem.GetComponent<WeaponBase>().data.animSpeeds;
+                }
+            }
+        }
 
         public void Initialize(Animator anim, float cooldown, float playTime)
         {
@@ -28,15 +40,14 @@ namespace PFX
             playNext = false;
         }
 
-        public void CombatHandler(bool hasSword, bool hasTool)
+        public void CombatHandler(bool hasItem, int actionType)
         {
             ResetAnimationBools();
-            AnimationStateUpdate(hasSword, hasTool);
-
 
             if (InputManager.I.Fire1())
             {
-                Fire(hasSword, hasTool);
+                if(InventoryManager.I.selectedSlot.itemInSlot != null)
+                    Fire(actionType);
             }
             
 
@@ -45,7 +56,7 @@ namespace PFX
                 if (combo > attacks.Length - 2)
                     combo = attacks.Length - 1;
 
-                Debug.Log(combo);
+               
                 anim.runtimeAnimatorController = attacks[combo];
                 anim.speed = animSpeeds[combo];
                 anim.Play("Attack", 2, 0);
@@ -55,39 +66,38 @@ namespace PFX
         }
 
 
-        private void Fire(bool hasSword, bool hasTool)
+        private void Fire(int actionType)
         {
-            anim.SetBool("hasSword", hasSword);
-            anim.SetBool("isTool", hasTool);
             lastTimeClicked = Time.time;
 
-            if (hasSword)
+            switch(InventoryManager.I.selectedSlot.itemInSlot.item.type)
             {
-                if (clicks == 0 && !anim.GetCurrentAnimatorStateInfo(2).IsName("Attack"))
-                {
-                    anim.runtimeAnimatorController = attacks[0];
-                    anim.speed = animSpeeds[0];
-                    anim.Play("Attack", 2, 0);
-                    clicks++;
-                }
-                else if (clicks > 0 && anim.GetCurrentAnimatorStateInfo(2).normalizedTime > .2f && anim.GetCurrentAnimatorStateInfo(2).IsName("Attack"))
-                {
-                    playNext = true;
-                    if (combo < attacks.Length - 1)
-                        combo++;
-                    else
-                        combo = 0;
-
-                    if (clicks < attacks.Length)
+                case ItemType.Weapon:
+                    if (clicks == 0 && !anim.GetCurrentAnimatorStateInfo(2).IsName("Attack"))
+                    {
+                        anim.runtimeAnimatorController = attacks[0];
+                        anim.speed = animSpeeds[0];
+                        anim.Play("Attack", 2, 0);
                         clicks++;
-                    else
-                        clicks = 0;
-                }
+                    }
+                    else if (clicks > 0 && anim.GetCurrentAnimatorStateInfo(2).normalizedTime > .2f && anim.GetCurrentAnimatorStateInfo(2).IsName("Attack"))
+                    {
+                        playNext = true;
+                        if (combo < attacks.Length - 1)
+                            combo++;
+                        else
+                            combo = 0;
 
-            }
-            else if(hasTool)
-            {
-                anim.Play("Mine", 2, 0);
+                        if (clicks < attacks.Length)
+                            clicks++;
+                        else
+                            clicks = 0;
+                    }
+                    break;
+
+                case ItemType.Tool:
+                    anim.Play("Mine", 2, 0);
+                    break;
             }
 
             anim.SetLayerWeight(2, 1);
@@ -105,28 +115,6 @@ namespace PFX
             {
                 combo = 0;
                 clicks = 0;
-            }
-        }
-
-        private void AnimationStateUpdate(bool hasSword, bool hasTool)
-        {
-            if (hasSword)
-            {
-                anim.SetBool("hasSword", true);
-                anim.SetBool("isTool", false);
-                anim.SetLayerWeight(1, 1);
-            }
-            else if (hasTool)
-            {
-                anim.SetBool("hasSword", false);
-                anim.SetBool("isTool", true);
-                anim.SetLayerWeight(1, 1);
-            }
-            else
-            {
-                anim.SetBool("hasSword", false);
-                anim.SetBool("isTool", false);
-                anim.SetLayerWeight(1, 0);
             }
         }
 

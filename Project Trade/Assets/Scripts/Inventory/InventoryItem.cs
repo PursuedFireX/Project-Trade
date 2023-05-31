@@ -21,10 +21,20 @@ namespace PFX
 
         private void Update()
         {
+            
+
             if (pickedUp)
             {
                 transform.position = Input.mousePosition;
             }
+        }
+
+        public void InitializeItem(BaseItemData newItem)
+        {
+            item = newItem;
+            image.sprite = newItem.icon;
+            UpdateCount();
+
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -35,6 +45,12 @@ namespace PFX
             }
         }
 
+        public void UpdateCount()
+        {
+            countText.text = count.ToString();
+            bool textActive = count > 1;
+            countText.gameObject.SetActive(textActive);
+        }
 
         private void PickupHandler(PointerEventData eventData)
         {

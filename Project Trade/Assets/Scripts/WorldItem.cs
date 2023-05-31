@@ -6,23 +6,36 @@ namespace PFX
 {
     public class WorldItem : MonoBehaviour
     {
+        [HideInInspector] public GameObject prefab;
+        [HideInInspector] public BaseItemData item;
         private Collider triggerCol;
-        private Collider col;
         private bool held;
 
         private void Awake()
         {
             triggerCol = GetComponent<Collider>();
-            col = GetComponentInChildren<Collider>();
         }
 
-        public void PickUp(Transform holder)
+        public void Initialize(GameObject prefab, BaseItemData itemData)
         {
-            transform.SetParent(holder);
+            item = itemData;
+            this.prefab = prefab;
+
+            Debug.Log("Initialized " + item.itemName);
+            GameObject newGo = Instantiate(prefab, transform);
+            newGo.transform.localPosition = Vector3.zero;
+            
+        }
+
+        public void PickUp()
+        {
+            if(InventoryManager.I.AddItem(item))
+                Destroy(this.gameObject);
+
+            /*transform.SetParent(holder);
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.Euler(new Vector3(0, 0, -180));
-            triggerCol.enabled = false;
-            col.enabled = false;
+            triggerCol.enabled = false;*/
         }
     }
 }

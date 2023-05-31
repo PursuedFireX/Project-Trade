@@ -110,5 +110,9 @@ namespace PFX
             return inputs.Player.ToggleInventory.triggered;
         }
 
+        public bool PickUp()
+        {
+            return inputs.Player.PickUp.triggered;
+        }
     }
 }
