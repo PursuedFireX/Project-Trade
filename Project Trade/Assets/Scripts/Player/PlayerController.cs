@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
+
 namespace PFX
 {
     public class PlayerController : MonoBehaviour
@@ -57,6 +58,14 @@ namespace PFX
         [FoldoutGroup("Combat Settings")]
         [SerializeField, FoldoutGroup("Combat Settings")]
         private float comboCooldown = 2;
+        [FoldoutGroup("Combat Settings")]
+        public float lockOnRange = 6;
+        [FoldoutGroup("Combat Settings")]
+        public LayerMask enemyLayer;
+        [FoldoutGroup("Combat Settings")]
+        public Transform lockOnTarget;
+        [FoldoutGroup("Combat Settings")]
+        public bool lockedOn;
 
         [HideInInspector] public bool canPickup = false;
 
@@ -65,9 +74,13 @@ namespace PFX
         [HideInInspector] public int actionTypeIndex;
         [HideInInspector] public bool hasItem;
 
-        private PlayerMovement movement;
-        private PlayerCombat combat;
+        [HideInInspector] public PlayerMovement movement;
+        [HideInInspector] public PlayerCombat combat;
         [HideInInspector] public WorldItem pickupItem;
+        [HideInInspector] public bool isAttacking;
+
+        
+        
 
         private void Awake()
         {

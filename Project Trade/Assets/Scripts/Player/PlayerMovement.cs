@@ -19,6 +19,9 @@ namespace PFX
 
         private float animVelocity;
         private float maxAnimVelocity;
+
+        private float animAtkVelocityX;
+        private float animAtkVelocityZ;
         private Animator anim;
         private float animAccel;
         private float animDecel;
@@ -30,12 +33,14 @@ namespace PFX
         private Vector3 velocity;
         private int jumps;
         private int maxJumps;
-
+        private PlayerController player;
+        [HideInInspector] public Vector3 targetDirection;
 
         private void Start()
         {
             controller = GetComponent<CharacterController>();
             cam = Camera.main.transform;
+            player = GetComponent<PlayerController>();
         }
 
         public void SetUp(Animator anim, float animAccel, float animDecel, float baseSize, float jumpSize)
@@ -49,10 +54,91 @@ namespace PFX
 
         public void MovementHandler(float walkSpd, float sprintSpd, float sneakSpd, float gravity, float acceleration, float deceleration)
         {
-            SpeedManager();
+            SpeedManager(walkSpd, sprintSpd, sneakSpd);
             float horizontal = InputManager.I.Move().x;
             float vertical = InputManager.I.Move().y;
             Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
+
+            if (direction.magnitude >= 0.1f)
+            {
+
+                if (spd < maxSpd)
+                    spd += Time.deltaTime * acceleration;
+                else if (spd > maxSpd)
+                    spd -= Time.deltaTime * deceleration;
+
+                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+                Vector3 moveDir = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
+                controller.Move(moveDir.normalized * spd * Time.deltaTime);
+
+                if (!player.lockedOn)
+                {
+                    if (!player.isAttacking)
+                    {
+                        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+                        transform.rotation = Quaternion.Euler(0, angle, 0);
+
+                        if (animVelocity < maxAnimVelocity)
+                            animVelocity += Time.deltaTime * animAccel;
+                        else if (animVelocity > maxAnimVelocity)
+                            animVelocity -= Time.deltaTime * animDecel;
+                    }
+                    else if (player.isAttacking)
+                    {
+                        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetDirection.y, ref turnSmoothVelocity, turnSmoothTime);
+                        transform.rotation = Quaternion.Euler(0, angle, 0);
+
+                        AttackMovemntHandler(direction);
+                    }
+                }
+                else if (player.lockedOn)
+                {
+                    Vector3 rotation = player.lockOnTarget.position - transform.position;
+                    rotation.y = 0;
+                    transform.rotation = Quaternion.LookRotation(rotation);
+
+                    AttackMovemntHandler(direction);
+                    
+                }
+                
+            }
+            else
+            {
+
+                if (spd > 0)
+                    spd -= Time.deltaTime * deceleration;
+                else if (spd < 0)
+                    spd = 0;
+
+                if (animVelocity > 0)
+                    animVelocity -= Time.deltaTime * animDecel;
+                else if (animVelocity < 0)
+                    animVelocity = 0;
+
+                animAtkVelocityX = 0;
+                animAtkVelocityZ = 0;
+            }
+
+            anim.SetFloat("Velocity", animVelocity);
+            anim.SetFloat("Velocity x", animAtkVelocityX);
+            anim.SetFloat("Velocity z", animAtkVelocityZ);
+        }
+
+        private void SpeedManager(float walkSpd, float sprintSpd, float sneakSpd)
+        {
+            if(InputManager.I.Crouch())
+            {
+                isSneaking = true;
+            }
+            else if(InputManager.I.Sprint())
+            {
+                isSprinting = true;
+            }
+            else
+            {
+                isSprinting = false;
+                isSneaking = false;
+            }
 
             if (isSneaking)
             {
@@ -70,61 +156,28 @@ namespace PFX
                 maxSpd = walkSpd;
                 anim.SetBool("isSprinting", false);
             }
-
-
-
-            if (direction.magnitude >= 0.1f)
-            {
-
-                if (spd < maxSpd)
-                    spd += Time.deltaTime * acceleration;
-                else if (spd > maxSpd)
-                    spd -= Time.deltaTime * deceleration;
-                    
-
-                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-                transform.rotation = Quaternion.Euler(0, angle, 0);
-
-                Vector3 moveDir = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
-                controller.Move(moveDir.normalized * spd * Time.deltaTime);
-
-                if (animVelocity < maxAnimVelocity)
-                    animVelocity += Time.deltaTime * animAccel;
-                else if (animVelocity > maxAnimVelocity)
-                    animVelocity -= Time.deltaTime * animDecel;
-            }
-            else
-            {
-
-                if (spd > 0)
-                    spd -= Time.deltaTime * deceleration;
-                else if (spd < 0)
-                    spd = 0;
-
-                if (animVelocity > 0)
-                    animVelocity -= Time.deltaTime * animDecel;
-                else if (animVelocity < 0)
-                    animVelocity = 0;
-            }
-
-            anim.SetFloat("Velocity", animVelocity);
         }
 
-        private void SpeedManager()
+        private void AttackMovemntHandler(Vector3 direction)
         {
-            if(InputManager.I.Crouch())
+            if (direction.x > 0)
             {
-                isSneaking = true;
+                animAtkVelocityX += Time.deltaTime * animAccel;
             }
-            else if(InputManager.I.Sprint())
+
+            if (direction.x < 0)
             {
-                isSprinting = true;
+                animAtkVelocityX -= Time.deltaTime * animAccel;
             }
-            else
+
+            if (direction.z > 0)
             {
-                isSprinting = false;
-                isSneaking = false;
+                animAtkVelocityZ += Time.deltaTime * animAccel;
+            }
+
+            if (direction.z < 0)
+            {
+                animAtkVelocityZ -= Time.deltaTime * animAccel;
             }
         }
 

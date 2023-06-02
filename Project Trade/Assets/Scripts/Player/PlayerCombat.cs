@@ -18,10 +18,17 @@ namespace PFX
 
         private AnimatorOverrideController[] attacks;
         private float[] animSpeeds;
+        private Transform cam;
+        private PlayerController player;
 
+        private void Start()
+        {
+            cam = Camera.main.transform;
+        }
         private void Update()
         {
-            if(InventoryManager.I.selectedSlot.itemInSlot != null)
+
+            if (InventoryManager.I.selectedSlot.itemInSlot != null)
             {
                 InventoryItem item = InventoryManager.I.selectedSlot.itemInSlot;
                 if (GameManager.I.playerController.heldItem.GetComponent<WeaponBase>() != null)
@@ -38,6 +45,8 @@ namespace PFX
             this.cooldown = cooldown;
             this.animationPlayTime = playTime;
             playNext = false;
+            
+            player = GetComponent<PlayerController>();
         }
 
         public void CombatHandler(bool hasItem, int actionType)
@@ -48,6 +57,12 @@ namespace PFX
             {
                 if(InventoryManager.I.selectedSlot.itemInSlot != null)
                     Fire(actionType);
+                
+            }
+
+            if(InputManager.I.Fire2())
+            {
+                LockOnTarget();
             }
             
 
@@ -62,6 +77,7 @@ namespace PFX
                 anim.Play("Attack", 2, 0);
                 playNext = false;
                 
+                
             }
         }
 
@@ -69,6 +85,9 @@ namespace PFX
         private void Fire(int actionType)
         {
             lastTimeClicked = Time.time;
+            player.isAttacking = true;
+            player.movement.targetDirection = new Vector3(transform.rotation.x, cam.eulerAngles.y, transform.rotation.z);
+            anim.SetBool("isAttacking", true);
 
             switch(InventoryManager.I.selectedSlot.itemInSlot.item.type)
             {
@@ -103,12 +122,36 @@ namespace PFX
             anim.SetLayerWeight(2, 1);
         }
 
+        private void LockOnTarget()
+        {
+            if (!player.lockedOn)
+            {
+                RaycastHit hit;
+                Vector3 dir = Quaternion.Euler(0, cam.eulerAngles.y, 0) * Vector3.forward;
+
+                if (Physics.Raycast(transform.position, dir, out hit, player.lockOnRange, player.enemyLayer))
+                {
+                    player.lockOnTarget = hit.transform;
+                    player.lockedOn = true;
+                    anim.SetBool("LockedOn", true);
+                }
+            }
+            else if(player.lockedOn)
+            {
+                player.lockOnTarget = null;
+                player.lockedOn = false;
+                anim.SetBool("LockedOn", false);
+            }
+        }
+
         private void ResetAnimationBools()
         {
             if(anim.GetCurrentAnimatorStateInfo(2).normalizedTime > .9f)
             {
                 clicks = 0;
                 combo = 0;
+                player.isAttacking = false;
+                anim.SetBool("isAttacking", false);
             }
 
             if (Time.time - lastTimeClicked > maxComboDelay)

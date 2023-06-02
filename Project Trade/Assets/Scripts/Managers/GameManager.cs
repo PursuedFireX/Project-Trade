@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 namespace PFX
 {
@@ -21,7 +22,10 @@ namespace PFX
         [HideInInspector] public PlayerController playerController;
         public BaseItemData test;
         public GameObject sword;
-        
+
+        public GameObject target;
+
+        public bool lockedOn = false;
 
         private void Awake()
         {
@@ -33,7 +37,6 @@ namespace PFX
             {
                 _instance = this;
             }
-
             player = GameObject.FindGameObjectWithTag("Player");
             playerController = player.GetComponent<PlayerController>();
 
@@ -43,6 +46,11 @@ namespace PFX
         {
             GameObject go = Instantiate(AssetManager.I.worldItem);
             go.GetComponent<WorldItem>().Initialize(sword, test);
+        }
+
+        private void Update()
+        {
+            
         }
     }
 }
