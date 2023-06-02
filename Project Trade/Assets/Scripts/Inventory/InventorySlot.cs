@@ -9,13 +9,17 @@ namespace PFX
     public class InventorySlot : MonoBehaviour, IPointerClickHandler
     {
         [SerializeField] private Image image;
-        [SerializeField] private Color baseColor;
-        [SerializeField] private Color selectedColor;
+        [SerializeField] private Sprite baseSprite;
+        [SerializeField] private Sprite selectedSprite;
         [HideInInspector] public InventoryItem itemInSlot;
+
+        private Animator anim;
 
         private void Awake()
         {
+            anim = GetComponent<Animator>();
             Deselect();
+            
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -28,12 +32,14 @@ namespace PFX
 
         public void Select()
         {
-            image.color = selectedColor;
+            anim.SetBool("selected", true);
+            image.sprite = selectedSprite;
         }
 
         public void Deselect()
         {
-            image.color = baseColor;
+            anim.SetBool("selected", false);
+            image.sprite = baseSprite;
         }
 
         private void DropHandler(PointerEventData eventData)

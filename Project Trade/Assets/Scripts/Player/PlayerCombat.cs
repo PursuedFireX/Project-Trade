@@ -60,7 +60,7 @@ namespace PFX
                 
             }
 
-            if(InputManager.I.Fire2())
+            if(InputManager.I.Fire3())
             {
                 LockOnTarget();
             }
@@ -138,10 +138,15 @@ namespace PFX
             }
             else if(player.lockedOn)
             {
-                player.lockOnTarget = null;
-                player.lockedOn = false;
-                anim.SetBool("LockedOn", false);
+                DisableLockOn();
             }
+        }
+
+        public void DisableLockOn()
+        {
+            player.lockOnTarget = null;
+            player.lockedOn = false;
+            anim.SetBool("LockedOn", false);
         }
 
         private void ResetAnimationBools()

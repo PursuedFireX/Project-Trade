@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 75355124117499125}
   - component: {fileID: 2805531873518262335}
   - component: {fileID: 1772729155123597033}
+  - component: {fileID: 5539379559625859062}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -98,6 +99,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 70be7b12a5a01a8488a40d2378afedd9, type: 2}
+  col: {fileID: 8061482520572241827}
+  rb: {fileID: 5539379559625859062}
+  damage: 10
+--- !u!54 &5539379559625859062
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4462992669315447274}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8061482520572241825
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,7 +143,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8061482520572241825}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: -0, z: 0.646}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -138,9 +158,9 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8061482520572241825}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.23
-  m_Height: 1.62
+  m_Height: 1.82
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0.62}
