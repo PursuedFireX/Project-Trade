@@ -86,8 +86,6 @@ namespace PFX
         {
             lastTimeClicked = Time.time;
             player.isAttacking = true;
-            player.movement.targetDirection = new Vector3(transform.rotation.x, cam.eulerAngles.y, transform.rotation.z);
-            anim.SetBool("isAttacking", true);
 
             switch(InventoryManager.I.selectedSlot.itemInSlot.item.type)
             {
@@ -156,7 +154,6 @@ namespace PFX
                 clicks = 0;
                 combo = 0;
                 player.isAttacking = false;
-                anim.SetBool("isAttacking", false);
             }
 
             if (Time.time - lastTimeClicked > maxComboDelay)

@@ -19,7 +19,7 @@ namespace PFX
         #endregion
 
         [HideInInspector] public bool inUI;
-        public CinemachineFreeLook cam;
+
 
         private void Awake()
         {
@@ -37,13 +37,11 @@ namespace PFX
         {
             if (!inUI)
             {
-                cam.enabled = true;
-                Cursor.lockState = CursorLockMode.Locked;
+                //Cursor.lockState = CursorLockMode.Locked;
             }
             else
             {
-                cam.enabled = false;
-                Cursor.lockState = CursorLockMode.None;
+                //Cursor.lockState = CursorLockMode.None;
             }
 
             

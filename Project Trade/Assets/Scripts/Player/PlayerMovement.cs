@@ -73,23 +73,14 @@ namespace PFX
 
                 if (!player.lockedOn)
                 {
-                    if (!player.isAttacking)
-                    {
-                        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-                        transform.rotation = Quaternion.Euler(0, angle, 0);
+                    float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+                    transform.rotation = Quaternion.Euler(0, angle, 0);
 
-                        if (animVelocity < maxAnimVelocity)
-                            animVelocity += Time.deltaTime * animAccel;
-                        else if (animVelocity > maxAnimVelocity)
-                            animVelocity -= Time.deltaTime * animDecel;
-                    }
-                    else if (player.isAttacking)
-                    {
-                        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetDirection.y, ref turnSmoothVelocity, turnSmoothTime);
-                        transform.rotation = Quaternion.Euler(0, angle, 0);
+                    if (animVelocity < maxAnimVelocity)
+                        animVelocity += Time.deltaTime * animAccel;
+                    else if (animVelocity > maxAnimVelocity)
+                        animVelocity -= Time.deltaTime * animDecel;
 
-                        AttackMovemntHandler(direction);
-                    }
                 }
                 else if (player.lockedOn)
                 {

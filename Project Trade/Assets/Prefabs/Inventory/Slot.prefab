@@ -69,7 +69,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 15a3362909151f440be1eba20e84646d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 942b6089d5a22f945ac50f5add096177, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -116,8 +116,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 4183755486208648724}
-  baseSprite: {fileID: 21300000, guid: 15a3362909151f440be1eba20e84646d, type: 3}
-  selectedSprite: {fileID: 21300000, guid: 906e82934e6522748a88473f00e44d15, type: 3}
+  baseSprite: {fileID: 21300000, guid: 942b6089d5a22f945ac50f5add096177, type: 3}
+  selectedSprite: {fileID: 21300000, guid: 7ea61539e85ab264bab1c7340ff66b86, type: 3}
   itemInSlot: {fileID: 0}
 --- !u!95 &3507156389263611303
 Animator:

@@ -23,6 +23,12 @@ namespace PFX
 
         #endregion
 
+        #region Materials
+
+        public Material fadeMat;
+
+        #endregion
+
 
         private void Awake()
         {
